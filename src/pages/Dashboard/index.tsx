@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
+import avatarImg from '../../assets/avatar.png';
 
 import {
   Container,
@@ -13,7 +14,9 @@ import {
   ProfileButton,
   UserAvatar,
   ProvidersList,
+  SignOutButton,
   ProvidersListTitle,
+  ProvidersTitle,
   ProviderContainer,
   ProviderAvatar,
   ProviderInfo,
@@ -23,13 +26,13 @@ import {
 } from './styles';
 
 export interface Provider {
-  id: string;
+  id: number;
   name: string;
   avatar_url: string;
 }
 const DashBoard: React.FC = () => {
   const [providers, setProviders] = useState<Provider[]>([]);
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { navigate } = useNavigation();
 
   useEffect(() => {
@@ -47,6 +50,9 @@ const DashBoard: React.FC = () => {
     },
     [navigate],
   );
+  const handleSignOut = useCallback(() => {
+    signOut();
+  }, [signOut]);
 
   return (
     <Container>
@@ -58,14 +64,27 @@ const DashBoard: React.FC = () => {
         </HeaderTitle>
 
         <ProfileButton onPress={navigateToProfile}>
-          <UserAvatar source={{ uri: user.avatar_url }} />
+          <UserAvatar
+            source={
+              user.avatar_url
+                ? {
+                    uri: user.avatar_url,
+                  }
+                : avatarImg
+            }
+          />
         </ProfileButton>
       </Header>
       <ProvidersList
         data={providers}
-        keyExtractor={provider => provider.id}
+        keyExtractor={provider => provider.id.toString()}
         ListHeaderComponent={
-          <ProvidersListTitle>Cabeleireiros</ProvidersListTitle>
+          <ProvidersListTitle>
+            <ProvidersTitle>Cabeleireiros</ProvidersTitle>
+            <SignOutButton onPress={handleSignOut}>
+              <Icon name="log-out" size={24} color="#999591" />
+            </SignOutButton>
+          </ProvidersListTitle>
         }
         renderItem={({ item: provider }) => (
           <ProviderContainer

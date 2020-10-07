@@ -30,6 +30,7 @@ export const UserName = styled.Text`
 `;
 
 export const ProfileButton = styled.TouchableOpacity``;
+
 export const UserAvatar = styled.Image`
   width: 56px;
   height: 56px;
@@ -38,13 +39,21 @@ export const UserAvatar = styled.Image`
 export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)`
   padding: 32px 24px 16px;
 `;
-export const ProvidersListTitle = styled.Text`
+
+export const ProvidersListTitle = styled.View`
+  flex-direction: row;
+  margin-left: 0px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`;
+export const ProvidersTitle = styled.Text`
   font-family: 'Roboto-Medium';
   font-size: 24px;
   color: #f4ede8;
-  margin-bottom: 24px;
 `;
-
+export const SignOutButton = styled.TouchableOpacity`
+  margin-left: auto;
+`;
 export const ProviderContainer = styled(RectButton)`
   background: #3e3b47;
   border-radius: 10px;

@@ -17,6 +17,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import api from '../../services/api';
 import getValidatationErrors from '../../util/getValidatationErrors';
+import avatarImg from '../../assets/avatar.png';
 
 import Input from '../../componentes/Input';
 import Button from '../../componentes/Button';
@@ -124,7 +125,7 @@ const Profile: React.FC = () => {
         takePhotoButtonTitle: 'usar câmera',
         chooseFromLibraryButtonTitle: 'Escolher da Galeria',
       },
-      response => {
+      async response => {
         if (response.didCancel) {
           return;
         }
@@ -144,9 +145,19 @@ const Profile: React.FC = () => {
           name: `${user.id}.jpg`,
           uri: response.uri,
         });
+
+        // data.append('file', {
+        //   uri:
+        //     Platform.OS === 'ios'
+        //       ? response.uri.replace('file://', '/private')
+        //       : response.uri,
+        //   name: `${user.id}.jpg`,
+        //   type: 'image/jpg',
+        // });
+
         // console.log('aqui');
         // console.log(data);
-        api.patch('users/avatar', data).then(apiResponse => {
+        await api.patch('users/avatar', data).then(apiResponse => {
           updateUser(apiResponse.data);
         });
 
@@ -174,7 +185,15 @@ const Profile: React.FC = () => {
               <Icon name="chevron-left" size={24} color="#999591" />
             </BackButton>
             <UserAvatarButton onPress={handleUpdateAvatar}>
-              <UserAvatar source={{ uri: user.avatar_url }} />
+              <UserAvatar
+                source={
+                  user.avatar_url
+                    ? {
+                        uri: user.avatar_url,
+                      }
+                    : avatarImg
+                }
+              />
             </UserAvatarButton>
             <View>
               <Title>Meu perfil</Title>
