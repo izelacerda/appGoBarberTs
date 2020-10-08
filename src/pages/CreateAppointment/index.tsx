@@ -162,7 +162,7 @@ const CreateAppointment: React.FC = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             data={providers}
-            keyExtractor={provider => provider.id}
+            keyExtractor={provider => provider.id.toString()}
             renderItem={({ item: provider }) => (
               <ProviderContainer
                 onPress={() => handleSelectProvider(provider.id)}
